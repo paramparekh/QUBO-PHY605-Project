@@ -6,18 +6,22 @@
   <style>
     p {
         text-align: left;
+        font-size: 0.6em;
     }
   </style>
   <body>
     <div class="reveal">
       <div class="slides">
-        <section>
-            Quadratic Unconstrained Binary Optimization
+        <section >
+            <div style="display: flex; flex-direction: column; align-items: center; height: 100%;">
 
-            
-            <p style="text-align: center;">Leon Rode, Param Parekh, Raja Rakshit Varanasi</p>
-
-            PHY 605 - Spring 2026
+                Quadratic Unconstrained Binary Optimization
+    
+                
+                <p style="text-align: center;">Leon Rode, Param Parekh, Raja Rakshit Varanasi</p>
+    
+                PHY 605 - Spring 2026
+            </div>
         </section>
         <section>
             <p>QUBO Formulation of Combinatorial Optimization Problems</p>
@@ -34,7 +38,7 @@
             $$
             y = x^t Q x
             $$
-
+ 
             where $Q$ is a symmetric matrix of constant coefficients.
         
         </p>
@@ -57,6 +61,93 @@
             
 
         </section>
+        <section>
+            <h6>Constraints</h6>
+
+            <p>
+                Most optimization problems have constraints, e.g. restricting some $x_i, x_j$ from being simultaneously 1.
+            </p>
+            <p>
+                These are described by inequalities, e.g.
+
+                $$ 
+                x_i + x_j \leq 1
+                $$
+
+                How can we encode this in our QUBO formulation? Using known inequality/quadratic penality pairs:
+
+                <table class="fragment" style="font-size: 0.6em;">
+                    <tr>
+                        <th>Classical Constraint</th>
+                        <th>QUBO Penalty</th>
+                    </tr>
+                    <tr>
+                        <td>$x_i+x_j\leq 1$</td>
+                        <td>$P(x_i x_j)$</td>
+                    </tr>
+                    <tr>
+                        <td>$x_i+x_j\geq 1$</td>
+                        <td>$P(1-x_i-x_j+x_ix_j)$</td>
+                    </tr>
+                    <tr>
+                        <td>$x_i+x_j = 1$</td>
+                        <td>$P(1-x_i-x_j+2x_ix_j)$</td>
+                    </tr>
+                    <tr>
+                        <td>$x_i\leq x_j$</td>
+                        <td>$P(x_i-x_ix_j)$</td>
+                    </tr>
+                    <tr>
+                        <td>$x_i + x_j + x_k \leq 1$</td>
+                        <td>$P(x_ix_j + x_ix_k + x_jx_k)$</td>
+                    </tr>
+                    <tr>
+                        <td>$x_i = x_j$</td>
+                        <td>$P(x_i + x_j - 2x_ix_j)$</td>
+                    </tr>
+                </table>
+
+                
+            </p>
+        </section>
+        <section>
+            <p>
+                For example, if our QUBO is described by
+                $$
+                \begin{align}
+                \min y &= x^t Q x \\
+                x_1 + x_2 &\leq 1 \\
+                \end{align}
+                $$
+    
+                then we encode the constraint as the quadratic penality $P(x_1 x_2)$, where $P>0$ is chosen in a way that ensures the constraint is satisfied, giving us an equivalent unconstrained QUBO formulation:
+
+                $$
+                \min y = x^t Q x + P(x_1 x_2)
+                $$
+
+                For example, one may choose a large $P$ to avoid both $x_1 = 1$ and $x_2 = 1$ simultaneously.
+
+            </p>
+        </section>
+        <section>
+            <h6>Slack Variables as general way to encode constraints</h6>
+
+            <p>
+
+                Let's say we have a constraint
+                $$
+                \sum_{i=1}^n a_i x_i \leq b
+                $$
+    
+                We turn this inequality into an equality by introducing a slack variable $0\leq s\leq b$ represented in binary form $$s = \sum_{i=0}^{N-1} 2^i s_i$$ where $N = \lfloor{\log_2(b)}\rfloor$, and $s_i \in \{0, 1\}$. 
+
+                Then the constraint becomes
+                $$
+                \sum_{i=1}^n a_i x_i + s = b
+                $$
+            </p>
+                </section>
       </div>
     </div>
     <script type="module" src="index.js"></script>
