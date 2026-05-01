@@ -2,13 +2,61 @@
 <html>
   <head>
     <link rel="stylesheet" href="dist/reveal.css" />
-    <link rel="stylesheet" href="dist/theme/white.css" />
   </head>
+  <style>
+    p {
+        text-align: left;
+    }
+  </style>
   <body>
     <div class="reveal">
       <div class="slides">
-        <section>Slide 1</section>
-        <section>Slide 2</section>
+        <section>
+            Quadratic Unconstrained Binary Optimization
+
+            
+            <p style="text-align: center;">Leon Rode, Param Parekh, Raja Rakshit Varanasi</p>
+
+            PHY 605 - Spring 2026
+        </section>
+        <section>
+            <p>QUBO Formulation of Combinatorial Optimization Problems</p>
+
+            <p>
+
+            Given a vector $x$ of binary decision variables
+
+            $$
+               x = (x_1, x_2, ..., x_n) \in\ \{0, 1\}^n
+            $$
+
+            QUBO attempts to minimize the optimization objective $y$ defined as
+            $$
+            y = x^t Q x
+            $$
+
+            where $Q$ is a symmetric matrix of constant coefficients.
+        
+        </p>
+             
+        </section>
+
+        <section>
+            <p>Goal: Solve the QUBO problem</p>$$
+
+            \begin{align}
+                \min y &= x^t Q x \\
+                A x &=b \\
+            \end{align}
+            $$
+
+         <p>where $A$ and $b$ have integer components, representing constraints.</p>
+
+            <p>$y$ may be a linear or quadratic function in $x$, but may be assumed to be quadratic without loss of generality (note that $x_i = x_i^2$, for $x_i \in \{0, 1\}$)</p>
+
+            
+
+        </section>
       </div>
     </div>
     <script type="module" src="index.js"></script>
