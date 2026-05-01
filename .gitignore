@@ -1,0 +1,19 @@
+# Virtual environments
+.venv/
+qaoa_env/
+venv/
+ENV/
+
+# Large binaries
+*.exe
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Local configuration/secrets
+.env
