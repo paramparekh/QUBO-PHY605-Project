@@ -148,10 +148,62 @@
                 $$
                 \sum_{i=1}^n a_i x_i + s = b
                 $$
+
+                and we return to an unconstrained QUBO formulation.
             </p>
         </section>
         <section>
+            <h6>Conversion to Ising Model</h6>
+            <p>
+                The Ising model is a mathematical model of ferromagnetism in statistical mechanics. It uses spin variables $s_i \in \{-1, 1\}$. To convert a QUBO problem to an Ising model, apply the linear transformation:
+            </p>
+            $$
+            x_i = \frac{s_i + 1}{2}
+            $$
+            <p>
+                where $x_i = 1$ corresponds to $s_i = 1$ (spin up) and $x_i = 0$ corresponds to $s_i = -1$ (spin down).
+            </p>
+        </section>
+        <section>
+            <h6>Transformation of the Objective Function</h6>
+            <p>
+                Substitute $x_i = \frac{s_i + 1}{2}$ into the quadratic form $x^t Q x$:
+                $$
+                \begin{align}
+                x_i x_j &= \frac{s_i + 1}{2} \cdot \frac{s_j + 1}{2} \\
+                &= \frac{1}{4} (s_i s_j + s_i + s_j + 1)
+                \end{align}
+                $$
+            </p>
+            <p>
+                The resulting expression takes the form of the Ising Hamiltonian:
+                $$
+                H(s) = \sum_{i \lt j} J_{ij} s_i s_j + \sum_{i} h_i s_i + C
+                $$
+    
+                where $$
+                \begin{align}
+                J_{ij} &= \frac{Q_{ij}}{4} \\
+                h_i &= \frac{Q_{ii}}{2} + \sum_{j \neq i} \frac{Q_{ij}}{4} \\
+                C &= \sum_i \frac{Q_{ii}}{2} + \sum_{i\lt j} \frac{Q_{ij}}{4}
+                \end{align}
+                $$
+            </p>
             
+        </section>
+        <section>
+            <h6>Parameters of the Ising Hamiltonian</h6>
+            <p>
+                The coefficients of the Ising model are derived from the QUBO matrix $Q$:
+            </p>
+            <ul>
+                <li><strong>Couplings ($J_{ij}$):</strong> $J_{ij} = \frac{Q_{ij}}{4}$</li>
+                <li><strong>External Fields ($h_i$):</strong> $h_i = \frac{Q_{ii}}{2} + \sum_{j \neq i} \frac{Q_{ij}}{4}$</li>
+                <li><strong>Constant Offset ($C$):</strong> $C = \sum_i \frac{Q_{ii}}{2} + \sum_{i\lt j} \frac{Q_{ij}}{4}$</li>
+            </ul>
+            <p>
+                The constant $C$ shifts the energy spectrum but does not change the location of the minimum, meaning the ground state of the Ising model corresponds to the optimal solution of the QUBO.
+            </p>
         </section>
       </div>
     </div>
