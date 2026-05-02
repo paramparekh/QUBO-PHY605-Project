@@ -4,7 +4,7 @@
     <link rel="stylesheet" href="dist/reveal.css" />
   </head>
   <style>
-    p {
+    p, li, table, th, td {
         text-align: left;
         font-size: 0.6em;
     }
@@ -24,132 +24,115 @@
             </div>
         </section>
         <section>
-            <p>QUBO Formulation of Combinatorial Optimization Problems</p>
-
+            <h6>Mathematical Definition</h6>
             <p>
-
-            Given a vector $x$ of binary decision variables
-
-            $$
-               x = (x_1, x_2, ..., x_n) \in\ \{0, 1\}^n
-            $$
-
-            QUBO attempts to minimize the optimization objective $y$ defined as
+                Quadratic Unconstrained Binary Optimization (QUBO) involves minimizing an objective function $y$ defined by:
+            </p>
             $$
             y = x^t Q x
             $$
- 
-            where $Q$ is a symmetric matrix of constant coefficients.
-        
-        </p>
-             
+            <p>
+                where $x = (x_1, x_2, ..., x_n) \in \{0, 1\}^n$ is a vector of binary decision variables and $Q$ is a symmetric matrix of constant coefficients.
+            </p>
         </section>
-
+        
         <section>
-            <p>Goal: Solve the QUBO problem</p>$$
-
+            <h6>Problem Formulation and Reduction</h6>
+            <p>The objective is to solve constrained combinatorial problems in the form:
+                $$
             \begin{align}
                 \min y &= x^t Q x \\
-                A x &=b \\
+                \text{subject to: } Ax &= b
             \end{align}
             $$
-
-         <p>where $A$ and $b$ have integer components, representing constraints.</p>
-
-            <p>$y$ may be a linear or quadratic function in $x$, but may be assumed to be quadratic without loss of generality (note that $x_i = x_i^2$, for $x_i \in \{0, 1\}$)</p>
-
-            <p>$y$ may be higher dimensional, but can be reduced to a quadratic form by introducing penalties.</p>
+            </p>
+            <p>where $A$ and $b$ consist of integer components representing system constraints. This formulation is flexible due to two key properties:</p>
+            <ul>
+                <li><strong>Linear to Quadratic:</strong> Any linear function in $x$ ($x_i$ binary) is quadratic without loss of generality because $x_i = x_i^2$ for $x_i \in \{0, 1\}$.</li>
+                <li><strong>Order Reduction:</strong> Higher-dimensional functions can be reduced to quadratic forms by introducing penalty terms:</li>
+            </ul>
 
             
+        </section>
+        
+        <section>
+            <h6>The Penalty Method</h6>
+            <p>
+                Constraints are incorporated into the QUBO objective function by adding quadratic penalties $P$. An inequality like $x_1 + x_2 \leq 1$ is transformed into an unconstrained minimization:
+            </p>
+            $$
+            \min y = x^t Q x + P(x_1 x_2)
+            $$
+            <p>
+                Choosing $P > 0$ sufficiently large ensures that violating the constraint (setting $x_1=1, x_2=1$) is energetically unfavorable.
+            </p>
 
+            
+        </section>
+
+        
+        <section>
+            <h6>Penalty Encoding Pairs</h6>
+            <p>Common logical constraints and their corresponding quadratic penalties:</p>
+            <table style="font-size: 0.8em; width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #ccc;">
+                        <th style="text-align: left; padding: 8px;">Classical Constraint</th>
+                        <th style="text-align: left; padding: 8px;">QUBO Penalty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td style="padding: 8px;">$x_i + x_j \leq 1$</td><td style="padding: 8px;">$P(x_i x_j)$</td></tr>
+                    <tr><td style="padding: 8px;">$x_i + x_j \geq 1$</td><td style="padding: 8px;">$P(1 - x_i - x_j + x_i x_j)$</td></tr>
+                    <tr><td style="padding: 8px;">$x_i + x_j = 1$</td><td style="padding: 8px;">$P(1 - x_i - x_j + 2x_i x_j)$</td></tr>
+                    <tr><td style="padding: 8px;">$x_i \leq x_j$</td><td style="padding: 8px;">$P(x_i - x_i x_j)$</td></tr>
+                    <tr><td style="padding: 8px;">$x_i + x_j + x_k \leq 1$</td><td style="padding: 8px;">$P(x_i x_j + x_i x_k + x_j x_k)$</td></tr>
+                    <tr><td style="padding: 8px;">$x_i = x_j$</td><td style="padding: 8px;">$P(x_i + x_j - 2x_i x_j)$</td></tr>
+                </tbody>
+            </table>
         </section>
         <section>
-            <h6>Constraints</h6>
+            <h6>An example of Order Reduction</h6>
 
             <p>
-                Most optimization problems have constraints, e.g. restricting some $x_i, x_j$ from being simultaneously 1.
-            </p>
-            <p>
-                These are described by inequalities, e.g.
-
-                $$ 
-                x_i + x_j \leq 1
+                Let the objective function $y$ contain a cubic term $x_1 x_2 x_3$: 
                 $$
-
-                How can we encode this in our QUBO formulation? Using known inequality/quadratic penality pairs:
-
-                <table class="fragment" style="font-size: 0.6em;">
-                    <tr>
-                        <th>Classical Constraint</th>
-                        <th>QUBO Penalty</th>
-                    </tr>
-                    <tr>
-                        <td>$x_i+x_j\leq 1$</td>
-                        <td>$P(x_i x_j)$</td>
-                    </tr>
-                    <tr>
-                        <td>$x_i+x_j\geq 1$</td>
-                        <td>$P(1-x_i-x_j+x_ix_j)$</td>
-                    </tr>
-                    <tr>
-                        <td>$x_i+x_j = 1$</td>
-                        <td>$P(1-x_i-x_j+2x_ix_j)$</td>
-                    </tr>
-                    <tr>
-                        <td>$x_i\leq x_j$</td>
-                        <td>$P(x_i-x_ix_j)$</td>
-                    </tr>
-                    <tr>
-                        <td>$x_i + x_j + x_k \leq 1$</td>
-                        <td>$P(x_ix_j + x_ix_k + x_jx_k)$</td>
-                    </tr>
-                    <tr>
-                        <td>$x_i = x_j$</td>
-                        <td>$P(x_i + x_j - 2x_ix_j)$</td>
-                    </tr>
-                </table>
-
+                y = x_1 x_2 x_3 + x_2 x_3+ x_3 x_1 + ...
+                $$
                 
+                Define $y_1 = x_1 x_2$ so that $$
+                y = y_1 x_3 + x_2 x_3 + x_3 x_1 + ...
+                
+                $$ reducing $y$ to a quadratic function.
+
+                Now it's necessary to add a penalty term, causing the solver to prefer the assignment $y_1 = x_1 x_2$ over any other assignment:
+                $$
+                y = y_1 x_3 + x_2 x_3 + x_3 x_1 + ... + P(x_1 x_2 - 2x_1 y_1 - 2x_2 y_1 + 3y_1) + \text{{other penalties}}
+                $$
+
+                We can do this recursively for even higher order terms:
+                $$
+                x_1 x_2 x_3 x_4 \rightarrow y_1 x_3 x_4 \rightarrow y_2 x_4
+                $$
+
+                with the corresponding penalty terms to enforce $y_1 = x_1 x_2$ and $y_2 = y_1 x_3$.
             </p>
         </section>
+        
         <section>
+            <h6>General Linear Inequalities and Slack Variables</h6>
             <p>
-                For example, if our QUBO is described by
-                $$
-                \begin{align}
-                \min y &= x^t Q x \\
-                x_1 + x_2 &\leq 1 \\
-                \end{align}
-                $$
-    
-                then we encode the constraint as the quadratic penality $P(x_1 x_2)$, where $P>0$ is chosen in a way that ensures the constraint is satisfied, giving us an equivalent unconstrained QUBO formulation:
-
-                $$
-                \min y = x^t Q x + P(x_1 x_2)
-                $$
-
-                For example, one may choose a large $P$ to avoid both $x_1 = 1$ and $x_2 = 1$ simultaneously.
-
-            </p>
-        </section>
-        <section>
-            <h6>Slack Variables as general way to encode constraints</h6>
-
-            <p>
-
-                Let's say we have a constraint
-                $$
-                \sum_{i=1}^n a_i x_i \leq b
-                $$
-    
-                We turn this inequality into an equality by introducing a slack variable $0\leq s\leq b$ represented in binary form $$s = \sum_{i=0}^{N-1} 2^i s_i$$ where $N = \lfloor{\log_2(b)}\rfloor$, and $s_i \in \{0, 1\}$. 
-
-                Then the constraint becomes
+                To encode a general inequality $\sum_{i=1}^n a_i x_i \leq b$, introduce a slack variable $s$ such that $0 \leq s \leq b$. This converts the inequality into an equality:
                 $$
                 \sum_{i=1}^n a_i x_i + s = b
                 $$
-
-                and we return to an unconstrained QUBO formulation.
+            </p>
+            <p>
+                To maintain binary consistency, $s$ is expanded using a power-of-two series:
+                $$
+                s = \sum_{i=0}^{N-1} 2^i s_i, \quad \text{where } N = \lfloor \log_2(b) \rfloor, \text{ and } s_i \in \{0, 1\}
+                $$
+                The resulting equality is then squared and added to the objective function as a penalty term.
             </p>
         </section>
         <section>
