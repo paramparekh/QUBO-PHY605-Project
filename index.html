@@ -210,6 +210,99 @@
                 The constant $C$ shifts the energy spectrum but does not change the location of the minimum, meaning the ground state of the Ising model corresponds to the optimal solution of the QUBO.
             </p>
         </section>
+
+        <section style="font-size: 1.2em;">
+            <h6>Circuits and Hamiltonians</h6>
+            <p>
+                Quantum gates are physically implemented by performing time evolution under a carefully engineered Hamiltonian $H$. This transformation is described by the unitary operator:
+                $$
+                U(H, t) = e^{-iHt/\hbar}
+                $$
+            </p>
+            <p>
+                This connection allows us to describe quantum circuits in terms of Hamiltonians. However, implementing a circuit that exactly exponentiates a Hamiltonian with many non-commuting terms is challenging:
+                $$
+                H = H_1 + H_2 + H_3 + \cdots + H_N
+                $$
+            </p>
+            <p>
+                In such cases, we use the <strong>Trotter-Suzuki</strong> decomposition formula to approximate the evolution.
+            </p>
+        </section>
+
+        <section style="font-size: 1.2em;">
+            <h6>Trotter-Suzuki Decomposition</h6>
+            <p>
+                To implement an approximate time-evolution unitary for a Hamiltonian $H = \sum_k H_k$, we use the Trotter-Suzuki decomposition formula:
+                $$
+                e^{A+B} \approx \left(e^{A/n} e^{B/n}\right)^n
+                $$
+            </p>
+            <p>
+                This allows us to approximate the full evolution operator $U(H, t)$ by a product of simpler unitaries:
+                $$
+                U(H, t, n) = \prod_{j=1}^n \prod_k e^{-iH_k t / n}
+                $$
+            </p>
+            <p>
+                As the number of steps $n$ becomes larger, the operator $U(H, t, n)$ approaches the exact time-evolution operator $e^{-iHt}$.
+            </p>
+        </section>
+
+        <section style="font-size: 1.1em;">
+            <h6>QAOA</h6>
+            <p>
+                The Quantum Approximate Optimization Algorithm (QAOA) is a general technique to find approximate solutions to combinatorial optimization problems. It consists of the following steps:
+            </p>
+            <ol style="line-height: 1.4;">
+                <li>Define a <strong>cost Hamiltonian $H_C$</strong> such that its ground state encodes the solution.</li>
+                <li>Define a <strong>mixer Hamiltonian $H_M$</strong>.</li>
+                <li>Construct the circuits $e^{-i\gamma H_C}$ and $e^{-i\alpha H_M}$ (cost and mixer layers).</li>
+                <li>Build the circuit by repeating the layers:
+                    $$U(\gamma, \alpha) = e^{-i\alpha_n H_M} e^{-i\gamma_n H_C} \cdots e^{-i\alpha_1 H_M} e^{-i\gamma_1 H_C}$$
+                </li>
+                <li>Prepare an initial state, apply $U(\gamma, \alpha)$, and optimize parameters classically.</li>
+                <li>Measure the output state to reveal approximate solutions to the problem.</li>
+            </ol>
+        </section>
+
+        <section style="font-size: 1.2em;">
+            <h6>QAOA for Knapsack Problem</h6>
+            <p>
+                The cost Hamiltonian $H_c$ from the QUBO formulation is translated into a parametric unitary:
+                $$U(H_c, \gamma_i) = e^{-i\gamma_i \left(\sum_{i<j} J_{ij} Z_i Z_j + \sum_i h_i Z_i\right)}$$
+            </p>
+            <ul>
+                <li>The term $e^{-i\gamma_i J_{ij} Z_i Z_j}$ is implemented using an <strong>$RZZ(2\gamma_i J_{ij})$</strong> gate.</li>
+                <li>The term $e^{-i\gamma_i h_i Z_i}$ is implemented using an <strong>$RZ(2\gamma_i h_i)$</strong> gate.</li>
+            </ul>
+            <p>
+                The mixer operator is defined as $U(B, \beta_i) = e^{i\beta_i X}$, where $X = \sum_{i=1}^n \sigma_i^x$.
+            </p>
+            <ul>
+                <li>Implemented using <strong>$R_X(-2\beta_i)$</strong> gates applied to each qubit.</li>
+                <li>This full sequence of gates is repeated $p$ times for optimization.</li>
+            </ul>
+        </section>
+
+        <section style="font-size: 1.2em;">
+            <h6>Initialization and Adiabatic QAOA</h6>
+            <p>
+                We can think of QAOA as a Trotterization of the <strong>Quantum Adiabatic Algorithm</strong>.
+            </p>
+            <ul style="font-size: 1.4em;">
+                <li><strong>Process:</strong> Start in the ground state $|+\rangle^{\otimes n}$ of the mixer Hamiltonian $X$ and move slowly to the ground state of the cost Hamiltonian $H_c$.</li>
+                <li><strong>Adiabatic Initialization:</strong> We can initialize parameters based on this principle:
+                    <ul style="font-size: 1.1em;">
+                        <li>Move $\beta_i$ linearly from $1$ to $0$.</li>
+                        <li>Move $\gamma_i$ linearly from $0$ to $1$.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>
+                By adopting this adiabatic initialization, the circuit can often find high-quality solutions even by skipping the classical optimization step.
+            </p>
+        </section>
       </div>
     </div>
     <script type="module" src="index.js"></script>
