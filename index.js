@@ -1,7 +1,7 @@
 import Reveal from "reveal.js";
 import RevealMath from "reveal.js/plugin/math";
 import 'reveal.js/reveal.css';
-import 'reveal.js/theme/black.css';
+import 'reveal.js/theme/white.css';
 
 let deck = new Reveal({
     plugins: [ RevealMath ],
@@ -10,6 +10,7 @@ let deck = new Reveal({
 
 deck.initialize({
     history: true,
-    center: false,
-    controls: false
+    center: true,
+    controls: false,
+    margin: 0.2
 });

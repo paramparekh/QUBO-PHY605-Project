@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="dist/reveal.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Inter:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+        --r-main-font: 'EB Garamond', serif;
+        --r-heading-font: 'EB Garamond', serif;
+        --r-heading-color: #003366; /* Classic Beamer blue */
+        --r-main-color: #222;
+        --r-background-color: #ffffff;
+        --beamer-blue: #003366;
+        --beamer-blue-light: #eef2f7;
+        --beamer-green: #006633;
+        --beamer-green-light: #edf5f0;
+        --beamer-red: #990000;
+        --beamer-red-light: #f9eeee;
+    }
+
+    .reveal {
+        font-family: var(--r-main-font);
+        font-size: 32px;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+        color: var(--r-heading-color);
+        font-family: var(--r-heading-font);
+        text-transform: none;
+        font-weight: bold;
+        margin-bottom: 0.5em;
+    }
+
+    .reveal h6 {
+        font-size: 1.1em;
+        background: var(--beamer-blue-light);
+        padding: 10px 20px;
+        border-radius: 4px;
+        border-bottom: none;
+        box-shadow: inset 5px 0 0 var(--beamer-blue);
+    }
+
+    .reveal p, .reveal li {
+        text-align: justify;
+        line-height: 1.4;
+        font-size: 0.85em;
+        margin-bottom: 0.5em;
+    }
+
+    /* Beamer-style square bullets */
+    .reveal ul {
+        list-style-type: none !important;
+        margin-left: 0;
+        padding-left: 1.2em;
+    }
+    .reveal ul li::before {
+        content: "■";
+        color: var(--beamer-blue);
+        display: inline-block;
+        width: 1em;
+        margin-left: -1em;
+        font-size: 0.7em;
+        vertical-align: 2px;
+    }
+
+    .reveal strong, .reveal b {
+        color: var(--beamer-blue);
+    }
+
+    .reveal table {
+        font-size: 0.75em;
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1em 0;
+        border-top: 2px solid var(--beamer-blue);
+        border-bottom: 2px solid var(--beamer-blue);
+    }
+
+    .reveal table thead th {
+        border-bottom: 1px solid #ccc;
+        background: var(--beamer-blue-light);
+        color: var(--beamer-blue);
+        padding: 10px;
+        font-weight: bold;
+    }
+
+    /* Block environments */
+    .beamer-block {
+        margin: 0.8em 0;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        text-align: left;
+    }
+    .beamer-block-header {
+        padding: 6px 15px;
+        font-weight: bold;
+        color: white;
+        font-size: 0.8em;
+    }
+    .beamer-block-body {
+        padding: 10px 15px;
+        font-size: 0.75em;
+    }
+
+    .beamer-block.standard { background-color: var(--beamer-blue-light); }
+    .beamer-block.standard .beamer-block-header { background-color: var(--beamer-blue); }
+
+    .beamer-block.example { background-color: var(--beamer-green-light); }
+    .beamer-block.example .beamer-block-header { background-color: var(--beamer-green); }
+
+    .beamer-block.alert { background-color: var(--beamer-red-light); }
+    .beamer-block.alert .beamer-block-header { background-color: var(--beamer-red); }
+
+    /* Footer */
+    .beamer-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        font-family: 'Inter', sans-serif;
+        font-size: 12px;
+        color: white;
+        z-index: 100;
+        font-weight: 500;
+    }
+    .beamer-footer div {
+        padding: 5px 15px;
+    }
+    .footer-left { background: #003366; flex: 1; }
+    .footer-center { background: #004488; flex: 2; text-align: center; }
+    .footer-right { background: #0055aa; flex: 1; text-align: right; }
+
+    .title-content h1 {
+        font-size: 1.8em;
+        color: var(--beamer-blue);
+        margin-bottom: 0.8em;
+    }
+
+    .title-content .authors {
+        font-size: 0.9em;
+        margin-bottom: 1.5em;
+        font-style: italic;
+    }
+
+    .title-content .affiliation {
+        font-size: 0.8em;
+        color: #666;
+    }
+
+    .reveal .math {
+        color: #000;
+    }
+  </style>
+  <script type="module" crossorigin src="/assets/index-Dssy4KBe.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BMMc8VgE.css">
+</head>
+  <body>
+    <div class="beamer-footer">
+        <div class="footer-left">Leon Rode, Param Parekh, Raja Rakshit Varanasi</div>
+        <div class="footer-center">Quadratic Unconstrained Binary Optimization</div>
+        <div class="footer-right">PHY 605 - Spring 2026</div>
+    </div>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+            <div class="title-content">
+                <h1>Quadratic Unconstrained Binary Optimization</h1>
+                <p class="authors">Leon Rode, Param Parekh, Raja Rakshit Varanasi</p>
+                <p class="affiliation">PHY 605 - Spring 2026</p>
+            </div>
+        </section>
+        <section>
+            <h6>Mathematical Definition</h6>
+            <div class="beamer-block standard">
+                <div class="beamer-block-header">Objective Function</div>
+                <div class="beamer-block-body">
+                    <p>
+                        Minimize $y$ defined by:
+                    </p>
+                    $$
+                    y = \mathbf{x}^t \mathbf{Q} \mathbf{x}
+                    $$
+                    <p>
+                        where $\mathbf{x} \in \{0, 1\}^n$ and $\mathbf{Q}$ is a symmetric matrix.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <section>
+            <h6>Problem Formulation and Reduction</h6>
+            <p>The objective is to solve constrained combinatorial problems in the form:
+                $$
+            \begin{align}
+                \min y &amp;= \mathbf{x}^t \mathbf{Q} \mathbf{x} \\
+                \text{subject to: } \mathbf{A}\mathbf{x} &amp;= \mathbf{b}
+            \end{align}
+            $$
+            </p>
+            <p>where $\mathbf{A}$ and $\mathbf{b}$ consist of integer components representing system constraints. This formulation is flexible due to two key properties:</p>
+            <ul>
+                <li><strong>Linear to Quadratic:</strong> Any linear function in $x$ ($x_i$ binary) is quadratic without loss of generality because $x_i = x_i^2$ for $x_i \in \{0, 1\}$.</li>
+                <li><strong>Order Reduction:</strong> Higher-dimensional functions can be reduced to quadratic forms by introducing penalty terms:</li>
+            </ul>
+
+            
+        </section>
+        
+        <section>
+            <h6>The Penalty Method</h6>
+            <p>
+                Constraints are incorporated into the QUBO objective function by adding quadratic penalties $P$. An inequality like $x_1 + x_2 \leq 1$ is transformed into an unconstrained minimization:
+                $$
+                \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + P(x_1 x_2)^2
+                $$
+            </p>
+            <ul>
+                <li>Choosing $P \gt 0$ sufficiently large ensures that violating the constraint (setting $x_1=1, x_2=1$) is energetically unfavorable.</li>
+                <li>All penalty terms are squared to ensure the term is never negative.</li>
+            </ul>
+
+
+            
+        </section>
+
+        
+        <section>
+            <h6>Penalty Encoding Pairs</h6>
+            <p>Common logical constraints and their corresponding quadratic penalties:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Classical Constraint</th>
+                        <th>QUBO Penalty</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>$x_i + x_j \leq 1$</td><td>$P(x_i x_j)$</td></tr>
+                    <tr><td>$x_i + x_j \geq 1$</td><td>$P(1 - x_i - x_j + x_i x_j)$</td></tr>
+                    <tr><td>$x_i + x_j = 1$</td><td>$P(1 - x_i - x_j + 2x_i x_j)$</td></tr>
+                    <tr><td>$x_i \leq x_j$</td><td>$P(x_i - x_i x_j)$</td></tr>
+                    <tr><td>$x_i + x_j + x_k \leq 1$</td><td>$P(x_i x_j + x_i x_k + x_j x_k)$</td></tr>
+                    <tr><td>$x_i = x_j$</td><td>$P(x_i + x_j - 2x_i x_j)$</td></tr>
+                </tbody>
+            </table>
+        </section>
+        <section>
+            <h6>An example of Order Reduction</h6>
+
+            <p>
+                Let the objective function $y$ contain a cubic term $x_1 x_2 x_3$: 
+                $$
+                y = x_1 x_2 x_3 + x_2 x_3+ x_3 x_1 + ...
+                $$
+                
+                Define $y_1 = x_1 x_2$ so that $$
+                y = y_1 x_3 + x_2 x_3 + x_3 x_1 + ...
+                
+                $$ reducing $y$ to a quadratic function.
+
+                Now it's necessary to add a penalty term, causing the solver to prefer the assignment $y_1 = x_1 x_2$ over any other assignment:
+                $$
+                y = y_1 x_3 + x_2 x_3 + x_3 x_1 + ... + P(x_1 x_2 - 2x_1 y_1 - 2x_2 y_1 + 3y_1)^2 + \text{{other penalties}}
+                $$
+
+                We can do this recursively for even higher order terms:
+                $$
+                x_1 x_2 x_3 x_4 \rightarrow y_1 x_3 x_4 \rightarrow y_2 x_4
+                $$
+
+                with the corresponding penalty terms to enforce $y_1 = x_1 x_2$ and $y_2 = y_1 x_3$.
+            </p>
+        </section>
+        
+        <section>
+            <h6>General Linear Inequalities and Slack Variables</h6>
+            <p>
+                To encode a general inequality $\sum_{i=1}^n a_i x_i \leq b$, introduce a slack variable $s$ such that $0 \leq s \leq b$. This converts the inequality into an equality:
+                $$
+                \sum_{i=1}^n a_i x_i + s = b
+                $$
+            </p>
+            <p>
+                To maintain binary consistency, $s$ is expanded using a power-of-two series:
+                $$
+                s = \sum_{i=0}^{N-1} 2^i s_i, \quad \text{where } N = \lfloor \log_2(b) \rfloor, \text{ and } s_i \in \{0, 1\}
+                $$
+                Then the constraint is encoded as a penalty term of the following form:
+                $$
+                P\left(\sum_{i=1}^n a_i x_i + \sum_{i=0}^{N-1} 2^i s_i - b\right)^2
+                $$
+
+                where the solver learns the value of $s$ that makes the term zero.
+
+
+               
+
+            </p>
+        </section>
+        <section>
+            <h6>The General Form of QUBO</h6>
+            <div class="beamer-block alert">
+                <div class="beamer-block-header">Unconstrained Minimization</div>
+                <div class="beamer-block-body">
+                    <p>
+                        The general form including penalty terms $P_i g_i(\mathbf{x})$ is:
+                    </p>
+                    $$
+                    \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \sum_i P_i g_i(\mathbf{x})
+                    $$
+                </div>
+            </div>
+        </section>
+        <section>
+            <h6>Conversion to Ising Model</h6>
+            <p>
+                The Ising model is a mathematical model of ferromagnetism in statistical mechanics. It uses spin variables $s_i \in \{-1, 1\}$. To convert a QUBO problem to an Ising model, apply the linear transformation:
+            </p>
+            $$
+            x_i = \frac{s_i + 1}{2}
+            $$
+            <p>
+                where $x_i = 1$ corresponds to $s_i = 1$ (spin up) and $x_i = 0$ corresponds to $s_i = -1$ (spin down).
+            </p>
+        </section>
+        <section>
+            <h6>Transformation of the Objective Function</h6>
+            <p>
+                Substitute $x_i = \frac{s_i + 1}{2}$ into the quadratic form $x^t Q x$:
+                $$
+                \begin{align}
+                x_i x_j &amp;= \frac{s_i + 1}{2} \cdot \frac{s_j + 1}{2} \\
+                &amp;= \frac{1}{4} (s_i s_j + s_i + s_j + 1)
+                \end{align}
+                $$
+            </p>
+            <p>
+                The resulting expression takes the form of the Ising Hamiltonian:
+                $$
+                H(s) = \sum_{i \lt j} J_{ij} s_i s_j + \sum_{i} h_i s_i + C
+                $$
+    
+                where $$
+                \begin{align}
+                J_{ij} &amp;= \frac{Q_{ij}}{4} \\
+                h_i &amp;= \frac{Q_{ii}}{2} + \sum_{j \neq i} \frac{Q_{ij}}{4} \\
+                C &amp;= \sum_i \frac{Q_{ii}}{2} + \sum_{i\lt j} \frac{Q_{ij}}{4}
+                \end{align}
+                $$
+            </p>
+            
+        </section>
+        <section>
+            <h6>Parameters of the Ising Hamiltonian</h6>
+            <p>
+                The coefficients of the Ising model are derived from the QUBO matrix $Q$:
+            </p>
+            <ul>
+                <li><strong>Couplings ($J_{ij}$):</strong> $J_{ij} = \frac{Q_{ij}}{4}$</li>
+                <li><strong>External Fields ($h_i$):</strong> $h_i = \frac{Q_{ii}}{2} + \sum_{j \neq i} \frac{Q_{ij}}{4}$</li>
+                <li><strong>Constant Offset ($C$):</strong> $C = \sum_i \frac{Q_{ii}}{2} + \sum_{i\lt j} \frac{Q_{ij}}{4}$</li>
+            </ul>
+            <p>
+                The constant $C$ shifts the energy spectrum but does not change the location of the minimum, meaning the ground state of the Ising model corresponds to the optimal solution of the QUBO.
+            </p>
+        </section>
+
+        <section>
+            <h6>Circuits and Hamiltonians</h6>
+            <p>
+                Quantum gates are physically implemented by performing time evolution under a carefully engineered Hamiltonian $H$. This transformation is described by the unitary operator:
+                $$
+                U(H, t) = e^{-iHt/\hbar}
+                $$
+            </p>
+            <p>
+                This connection allows us to describe quantum circuits in terms of Hamiltonians. However, implementing a circuit that exactly exponentiates a Hamiltonian with many non-commuting terms is challenging:
+                $$
+                H = H_1 + H_2 + H_3 + \cdots + H_N
+                $$
+            </p>
+            <p>
+                In such cases, we use the <strong>Trotter-Suzuki</strong> decomposition formula to approximate the evolution.
+            </p>
+        </section>
+
+        <section>
+            <h6>Trotter-Suzuki Decomposition</h6>
+            <p>
+                To implement an approximate time-evolution unitary for a Hamiltonian $H = \sum_k H_k$, we use the Trotter-Suzuki decomposition formula:
+                $$
+                e^{A+B} \approx \left(e^{A/n} e^{B/n}\right)^n
+                $$
+            </p>
+            <p>
+                This allows us to approximate the full evolution operator $U(H, t)$ by a product of simpler unitaries:
+                $$
+                U(H, t, n) = \prod_{j=1}^n \prod_k e^{-iH_k t / n}
+                $$
+            </p>
+            <p>
+                As the number of steps $n$ becomes larger, the operator $U(H, t, n)$ approaches the exact time-evolution operator $e^{-iHt}$.
+            </p>
+        </section>
+
+        <section>
+            <h6>QAOA</h6>
+            <div class="beamer-block example">
+                <div class="beamer-block-header">Algorithm Steps</div>
+                <div class="beamer-block-body">
+                    <ol>
+                        <li>Define a <strong>cost Hamiltonian $H_C$</strong>.</li>
+                        <li>Define a <strong>mixer Hamiltonian $H_M$</strong>.</li>
+                        <li>Construct circuits $e^{-i\gamma H_C}$ and $e^{-i\alpha H_M}$.</li>
+                        <li>Build circuit: $U(\gamma, \alpha) = \prod_{k=1}^p e^{-i\alpha_k H_M} e^{-i\gamma_k H_C}$.</li>
+                        <li>Optimize parameters $\gamma, \alpha$ classically.</li>
+                        <li>Measure to find approximate solutions.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h6>QAOA for Knapsack Problem</h6>
+            <p>
+                The cost Hamiltonian $H_c$ from the QUBO formulation is translated into a parametric unitary:
+                $$U(H_c, \gamma_i) = e^{-i\gamma_i \left(\sum_{i\lt j} J_{ij} Z_i Z_j + \sum_i h_i Z_i\right)}$$
+            </p>
+            <ul>
+                <li>The term $e^{-i\gamma_i J_{ij} Z_i Z_j}$ is implemented using an <strong>$RZZ(2\gamma_i J_{ij})$</strong> gate.</li>
+                <li>The term $e^{-i\gamma_i h_i Z_i}$ is implemented using an <strong>$RZ(2\gamma_i h_i)$</strong> gate.</li>
+            </ul>
+            <p>
+                The mixer operator is defined as $U(B, \beta_i) = e^{i\beta_i X}$, where $X = \sum_{i=1}^n \sigma_i^x$.
+            </p>
+            <ul>
+                <li>Implemented using <strong>$R_X(-2\beta_i)$</strong> gates applied to each qubit.</li>
+                <li>This full sequence of gates is repeated $p$ times for optimization.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h6>Initialization and Adiabatic QAOA</h6>
+            <p>
+                We can think of QAOA as a Trotterization of the <strong>Quantum Adiabatic Algorithm</strong>.
+            </p>
+            <ul>
+                <li><strong>Process:</strong> Start in the ground state $|+\rangle^{\otimes n}$ of the mixer Hamiltonian $X$ and move slowly to the ground state of the cost Hamiltonian $H_c$.</li>
+                <li><strong>Adiabatic Initialization:</strong> We can initialize parameters based on this principle:
+                    <ul>
+                        <li>Move $\beta_i$ linearly from $1$ to $0$.</li>
+                        <li>Move $\gamma_i$ linearly from $0$ to $1$.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>
+                By adopting this adiabatic initialization, the circuit can often find high-quality solutions even by skipping the classical optimization step.
+            </p>
+        </section>
+      </div>
+    </div>
+
+  </body>
+</html>
