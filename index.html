@@ -272,7 +272,7 @@
             <section>
                 <h6>Mathematical Definition</h6>
                 <div class="beamer-block standard">
-                    <div class="beamer-block-header">Objective Function</div>
+                    <div class="beamer-block-header">Objective Function (Unconstrained)</div>
                     <div class="beamer-block-body">
                         <p>Minimize $y$ defined by:</p>
                         $$ y = \mathbf{x}^t \mathbf{Q} \mathbf{x} $$
@@ -282,9 +282,9 @@
             </section>
 
             <!-- Problem Formulation and Reduction -->
-            <section class="compact-slide">
+            <section style="font-size: 0.8em;">
                 <h6>Problem Formulation and Reduction</h6>
-                <p style="font-size: 0.9em;">Solve constrained combinatorial problems in the form:</p>
+                <p style="font-size: 0.9em;">QUBO can solve constrained versions of combinatorial problems, as well as higher order problems.</p>
                 $$
                 \begin{align}
                 \min y &amp;= \mathbf{x}^t \mathbf{Q} \mathbf{x} \\
@@ -293,31 +293,28 @@
                 $$
                 <div style="display: flex; gap: 20px; font-size: 0.8em; margin-top: 10px;">
                     <div style="flex: 1; padding: 10px; background: var(--beamer-blue-light); border-radius: 5px;">
-                        <strong>1. Linear to Quadratic:</strong> Any linear function in binary $x$ is quadratic ($x_i =
-                        x_i^2$).
+                        <strong>1. Linear to Quadratic:</strong> Any linear function in binary $x$ is quadratic  <br/>($x_i =
+                        x_i^2$ for $x_i \in \{0, 1\}$).
                     </div>
                     <div style="flex: 1; padding: 10px; background: var(--beamer-blue-light); border-radius: 5px;">
-                        <strong>2. Order Reduction:</strong> Higher-dimensional terms can be reduced via penalty
-                        variables.
+                        <strong>2. Order Reduction:</strong> Higher-dimensional terms can be reduced to quadratic forms.
                     </div>
                 </div>
             </section>
 
             <!-- The Penalty Method -->
-            <section>
+            <section style="font-size: 0.8em;">
                 <h6>The Penalty Method</h6>
-                <p>Constraints are incorporated into the QUBO objective function by adding quadratic penalties weighted
-                    by $\lambda$. An
-                    inequality like $x_1 + x_2 \leq 1$ is transformed into an unconstrained minimization:</p>
-                $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \lambda(x_1 x_2)^2 $$
-                <ul>
-                    <li>Choosing $\lambda \gt 0$ ensures violating the constraint is energetically unfavorable.</li>
-                    <li>All penalty terms are squared to ensure the term is never negative.</li>
-                </ul>
+                <p>QUBO solvers only take in unconstrained problems. Hence, we need to incorporate constraints into the objective function.</p>
+                <p>To do so, we add quadratic penalties weighted
+                    by $\lambda$. </p>
+
+                <p>For example, consider the constraint $x_1 + x_2 \leq 1$. Then we introduce a penalty term that is zero only if the constraint is satisfied (i.e. $x_1 = 0$ or $x_2 = 0$):</p>
+                $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \lambda(x_1 x_2)^2 $$</p>
             </section>
 
             <!-- Penalty Encoding Pairs -->
-            <section>
+            <section style="font-size: 0.8em;">
                 <h6>Penalty Encoding Pairs</h6>
                 <p>Common logical constraints and their corresponding quadratic penalties:</p>
                 <table>
@@ -357,39 +354,31 @@
             </section>
 
             <!-- Order Reduction Example -->
-            <section class="compact-slide">
+            <section style="font-size: 0.8em;">
                 <h6>An example of Order Reduction</h6>
-                <p style="font-size: 0.85em;">Reduce a cubic term $x_1 x_2 x_3$ to quadratic form by defining $y_1 = x_1
+                <p >Reduce a cubic term $x_1 x_2 x_3$ to quadratic form by defining $x_4 = x_1
                     x_2$:</p>
-                <div style="display: flex; gap: 20px; align-items: flex-start; font-size: 0.8em;">
-                    <div style="flex: 1;">
-                        <p><strong>1. Transformation:</strong></p>
-                        $$ y = y_1 x_3 + x_2 x_3 + \dots $$
-                        <p><strong>2. Penalty Term:</strong></p>
-                        $$ \lambda(x_1 x_2 - 2x_1 y_1 - 2x_2 y_1 + 3y_1)^2 $$
-                    </div>
-                    <div style="flex: 1;">
-                        <p><strong>3. Recursion:</strong></p>
-                        <p>Higher order terms follow the same logic:</p>
-                        $$ x_1 x_2 x_3 x_4 \rightarrow y_1 x_3 x_4 \rightarrow y_2 x_4 $$
-                        <p>with penalties enforcing $y_1=x_1 x_2$, etc.</p>
-                    </div>
-                </div>
+                <p><strong>1. Transformation:</strong></p>
+                <p>$$ y = \textcolor{red}{ x_1 x_2} x_3 \rightarrow y = \textcolor{red}{x_4} x_3 $$</p>
+                <p><strong>2. Enforce via Penalty Term:</strong></p>
+                <p>$$ y = \textcolor{red}{x_4} x_3 + \lambda(x_1 x_2 - 2x_1 x_4 - 2x_2 x_4 + 3x_4)^2 $$</p>
+                <p><strong>3. Recursion:</strong></p>
+                <p>Higher order terms follow the same logic:</p>
+                $$ \textcolor{red}{x_1 x_2} x_3 x_4 \rightarrow \textcolor{red}{x_5}\textcolor{blue}{x_3} x_4 \rightarrow \textcolor{blue}{x_6} x_3 $$
+                <p>with penalties enforcing $x_5=x_1 x_2$ and $x_6 = x_5 x_3$.</p>
             </section>
 
             <!-- General Linear Inequalities -->
-            <section class="compact-slide">
+            <section style="font-size: 0.8em;">
                 <h6>General Linear Inequalities and Slack Variables</h6>
-                <p>To encode an inequality $\sum_{i=1}^n a_i x_i \leq b$ &nbsp;, introduce a slack variable $s \in [0,
-                    b]$ such
-                    that $\sum a_i x_i + s = b$ &nbsp; &nbsp;. This is implemented by adding a penalty term to the
-                    objective:</p>
+                <p>To encode a more general inequality $\sum a_i x_i \leq b$ into the objective function, introduce a slack variable $s \in [0,
+                    b]$ so that the inequality becomes an equality: $\sum a_i x_i + s = b$. Then write $s$ in binary:
+                    $$ s = \sum_{i=0}^{N-1} 2^i s_i $$
+                    where $N = \lfloor \log_2(b) \rfloor$ and $s_i \in \{0,
+                        1\}$.</p>
                 <div style="display: flex; gap: 30px; align-items: flex-start;">
                     <div style="flex: 1;">
                         <p><strong>1. Binary Expansion:</strong></p>
-                        $$ s = \sum_{i=0}^{N-1} 2^i s_i $$
-                        <p style="font-size: 0.8em;">where $N = \lfloor \log_2(b) \rfloor$ &nbsp; and $s_i \in \{0,
-                            1\}$.</p>
                     </div>
                     <div style="flex: 1;">
                         <p><strong>2. Penalty Term:</strong></p>

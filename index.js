@@ -4,7 +4,7 @@ import 'reveal.js/reveal.css';
 import 'reveal.js/theme/white.css';
 
 let deck = new Reveal({
-    plugins: [ RevealMath ],
+    plugins: [ RevealMath.MathJax4 ],
     
 });
 
