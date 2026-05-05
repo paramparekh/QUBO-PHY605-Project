@@ -12,5 +12,6 @@ deck.initialize({
     history: true,
     center: true,
     controls: false,
+    
     margin: 0.2
 });

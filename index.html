@@ -255,17 +255,25 @@
                 </div>
             </section>
 
+            <section>
+                <h6>Outline</h6>
+                <ul>
+                    <li>QUBO Representation</li>
+                    <li>Knapsack Problem</li>
+                    <li>Converting Knapsack to QUBO</li>
+                    <li>Converting QUBO to Ising Model</li>
+                    <li>QAOA for Knapsack Problem</li>
+
+                </ul>
+            </section>
             <!-- Why Quantum Computing -->
             <section>
                 <h6>Combinatorial optimization problems using quantum computing </h6>
-                <p>Highly promising near-term application.</p>
+                <p>Promising near-term application.</p>
                 <ul>
-                    <li><strong>Importance:</strong> Many applications in logistics, finance, and engineering translate
-                        directly into combinatorial optimization problems.</li>
+                    <li><strong>Importance:</strong> Many combinatorial optimization problems in logistics, finance, and engineering.</li>
                     <li><strong>The Challenge:</strong> Finding good classical solutions for large instances requires an
                         enormous amount of computational resources and time.</li>
-                    <li><strong>The Quantum Advantage:</strong> Quantum algorithms (like QAOA) leverage superposition
-                        and entanglement to explore massive solution spaces more efficiently.</li>
                 </ul>
             </section>
 
@@ -293,11 +301,11 @@
                 \end{align}
                 $$
                 <div style="display: flex; gap: 20px; font-size: 0.8em; margin-top: 10px;">
-                    <div style="flex: 1; padding: 10px; background: var(--beamer-blue-light); border-radius: 5px;">
+                    <div class="fragment" style="flex: 1; padding: 10px; background: var(--beamer-blue-light); border-radius: 5px;">
                         <strong>1. Linear to Quadratic:</strong> Any linear function in binary $x$ is quadratic  <br/>($x_i =
                         x_i^2$ for $x_i \in \{0, 1\}$).
                     </div>
-                    <div style="flex: 1; padding: 10px; background: var(--beamer-blue-light); border-radius: 5px;">
+                    <div class="fragment" style="flex: 1; padding: 10px; background: var(--beamer-blue-light); border-radius: 5px;">
                         <strong>2. Order Reduction:</strong> Higher-dimensional terms can be reduced to quadratic forms.
                     </div>
                 </div>
@@ -310,8 +318,8 @@
                 <p>To do so, we add quadratic penalties weighted
                     by $\lambda$. </p>
 
-                <p>For example, consider the constraint $x_1 + x_2 \leq 1$. Then we introduce a penalty term that is zero only if the constraint is satisfied (i.e. $x_1 = 0$ or $x_2 = 0$):</p>
-                $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \lambda(x_1 x_2)^2 $$</p>
+                <p class="fragment">For example, consider the constraint $x_1 + x_2 \leq 1$. Then we introduce a penalty term that is zero only if the constraint is satisfied (i.e. $x_1 = 0$ or $x_2 = 0$):</p>
+                <p class="fragment">$$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \lambda(x_1 x_2)^2 $$</p>
             </section>
 
             <!-- Penalty Encoding Pairs -->
@@ -359,37 +367,46 @@
                 <h6>An example of Order Reduction</h6>
                 <p >Reduce a cubic term $x_1 x_2 x_3$ to quadratic form by defining $x_4 = x_1
                     x_2$:</p>
-                <p><strong>1. Transformation:</strong></p>
-                <p>$$ y = \textcolor{red}{ x_1 x_2} x_3 \rightarrow y = \textcolor{red}{x_4} x_3 $$</p>
-                <p><strong>2. Enforce via Penalty Term:</strong></p>
-                <p>$$ y = \textcolor{red}{x_4} x_3 + \lambda(x_1 x_2 - 2x_1 x_4 - 2x_2 x_4 + 3x_4) $$</p>
-                <p><strong>3. Recursion:</strong></p>
-                <p>Higher order terms follow the same logic:</p>
-                $$ \textcolor{red}{x_1 x_2} x_3 x_4 \rightarrow \textcolor{red}{x_5}\textcolor{blue}{x_3} x_4 \rightarrow \textcolor{blue}{x_6} x_3 $$
-                <p>with penalties enforcing $x_5=x_1 x_2$ and $x_6 = x_5 x_3$.</p>
+                    <div class="fragment">
+                        <p ><strong>1. Transformation:</strong></p>
+                        <p >$$ y = \textcolor{red}{ x_1 x_2} x_3 \rightarrow y = \textcolor{red}{x_4} x_3 $$</p>
+
+                    </div>
+                <div class="fragment">
+                    <p ><strong>2. Enforce via Penalty Term:</strong></p>
+                    <p >$$ y = \textcolor{red}{x_4} x_3 + \lambda(x_1 x_2 - 2x_1 x_4 - 2x_2 x_4 + 3x_4) $$</p>
+
+                </div>
+                <div class="fragment">
+                    <p ><strong>3. Recursion for Higher Order Cases:</strong></p>
+                    <p >Higher order terms follow the same logic:</p>
+                    <p >    $$ \textcolor{red}{x_1 x_2} x_3 x_4 \rightarrow \textcolor{red}{x_5}\textcolor{blue}{x_3} x_4 \rightarrow \textcolor{blue}{x_6} x_3 $$</p>
+                    <p >with penalties enforcing $x_5=x_1 x_2$ and $x_6 = x_5 x_3$.</p>
+
+                </div>
             </section>
 
             <!-- General Linear Inequalities -->
             <section style="font-size: 0.6em;">
                 <h6>General Linear Inequalities and Slack Variables</h6>
-                <p>To encode a more general inequality $\sum a_i x_i \leq b$ into the objective function, introduce a slack variable $s \in [0,
+                <p class="fragment">To encode a more general inequality $\sum a_i x_i \leq b$ into the objective function, introduce a slack variable $s \in [0,
                     b]$ so that the inequality becomes an equality: $\sum a_i x_i + s = b$. Then write $s$ in binary:
                     $$ s = \sum_{i=0}^{N-1} 2^i s_i $$
                     where $N = \lfloor \log_2(b) \rfloor$ and $s_i \in \{0,
                         1\}$.</p>
 
-                <p>
+                <p class="fragment">
                     Letting $k = \sum_{i=1}^n a_i x_i$,  the penalty term is
                     $$ \lambda\left(\sum_{i=1}^n a_i x_i + s - b\right)^2 = \lambda(k + s - b)^2 $$
 
                     
 
                 </p>
-                <p>
+                <p class="fragment">
                     <strong>Case I - Valid Assignment </strong> when $k ≤ b$: A valid choice of $s$ (specifically $s = b - k$) can be "learned" by the solver, and the penalty term becomes $$ \lambda (k + (b-k) - b)^2 = 0 $$
 
                 </p>
-                <p>
+                <p class="fragment">
                     <strong>Case II - Invalid Assignment</strong> when $k > b$. Then $k = b + \Delta$ for some $\Delta > 0$, and the penalty term is $$ \lambda (b + \Delta + s - b)^2 = \lambda (\Delta + s)^2 > 0 $$ since $s \geq 0$ and $\Delta > 0$.
 
                 </p>
@@ -402,7 +419,7 @@
                 <h6>The General Form of QUBO</h6>
 
                 <p>
-                    In summary, with the tools of order reduction and penalty terms, we can turn constrained optimization problems into an unconstrained optimization problem of the form:
+                    In summary, with the tools of order reduction and penalty terms, we can turn constrained binary optimization problems into an unconstrained binary optimization problem of the form:
                     $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \sum_{i=1}^N \lambda_i g_i(\mathbf{x})^2 $$
 
                     where $\lambda_i g_i(\mathbf{x})^2$ are the weighted penalty terms for each of $N$ constraints.
@@ -412,6 +429,7 @@
 
             <!-- Knapsack Problem 1 -->
             <section style="font-size: 0.8em;">
+                <h6>Knapsack Problem</h6>
                 <p style="margin-bottom: 0.2em;"><strong>Problem Description:</strong> 5 items (⚽️, 💻, 📸, 📚, 🎸) with
                     varying importance and limited knapsack space. Goal: maximize total value.</p>
                 <p style="margin-bottom: 0.2em;"><strong>Variables:</strong> Let $x_i \in \{0, 1\}$ &nbsp; represent
@@ -496,9 +514,6 @@
                                     spins, depending on the problem structure.</li>
                                 <li style="margin-bottom: 5px;"><strong>$h_i$:</strong> Linear terms (local magnetic
                                     fields).</li>
-                                <li style="margin-bottom: 0;"><strong>Penalty ($\lambda$):</strong> $\lambda = 2$ is
-                                    sufficient here. Increase if constraints fail; reduce if valid solutions are
-                                    suboptimal.</li>
                             </ul>
                         </div>
                     </div>
@@ -593,7 +608,7 @@
             <section>
                 <h6>Single Qubit Example</h6>
                 <ul>
-                    <li>Let's say $f(0) < f(1)$</li>
+                    <li>Let's say $f(0) \lt f(1)$</li>
                     <li class="fragment"> Cost hamiltonian $H_C = -Z$ as
                         <ul>
                             <li>$H_C |0\rangle = -|0\rangle$</li>
@@ -725,7 +740,7 @@
                 <ul>
                     <li> We set a new penalty without the slack bits
                         <div style="font-size: 0.5em;">
-                            $$ \min_{x,s} (f(x) + p(x,s)) = \min_{x,s} \left[ -\sum_i v_i x_i - \lambda_1 \left(\sum_i
+                            $$ \min_{x,s} (f(x) + p(x,s)) = \min_{x,s} \left[ -\sum_i v_i x_i + \lambda_1 \left(\sum_i
                             w_i x_i - W\right) + \lambda_2 \left(\sum_i w_i x_i - W\right)^2 \right]$$
                         </div>
                     </li>
@@ -757,6 +772,15 @@
                     <img src="outputQA.png" alt="Slack"
                         style="display: block; margin: 10px auto; max-height: 400px; max-width: 90%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
 
+                </ul>
+            </section>
+
+            <section>
+                <h6>Conclusion</h6>
+                <ul>
+                    <li>We have seen how to convert a combinatorial optimization problem to a QUBO problem and then to an Ising model.</li>
+                    <li>We have seen how to use QAOA to solve the Knapsack Problem.</li>
+                    <li>We have seen how to use quantum annealing to solve the Knapsack Problem.</li>
                 </ul>
             </section>
 
