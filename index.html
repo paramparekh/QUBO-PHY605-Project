@@ -194,12 +194,13 @@
         }
 
         .beamer-footer div {
-            padding: 5px 15px;
+            padding: 10px 15px;
         }
 
         .footer-left {
             background: #003366;
             flex: 1;
+            height: 100%;
         }
 
         .footer-center {
@@ -240,15 +241,15 @@
 <body>
     <div class="beamer-footer">
         <div class="footer-left">Leon Rode, Param Parekh, Raja Rakshit Varanasi</div>
-        <div class="footer-center">Quadratic Unconstrained Binary Optimization</div>
+        <div class="footer-center">Quadratic Unconstrained Binary Optimization (QUBO), QAOA, Quantum Annealing</div>
         <div class="footer-right">PHY 605 - Spring 2026</div>
     </div>
     <div class="reveal">
         <div class="slides">
             <!-- Title Slide -->
-            <section>
+            <section style="font-size: 0.8em;">
                 <div class="title-content">
-                    <h1>Quadratic Unconstrained Binary Optimization</h1>
+                    <h2>Quadratic Unconstrained Binary Optimization (QUBO), QAOA, Quantum Annealing</h2>
                     <p class="authors">Leon Rode, Param Parekh, Raja Rakshit Varanasi</p>
                     <p class="affiliation">PHY 605 - Spring 2026</p>
                 </div>
@@ -361,7 +362,7 @@
                 <p><strong>1. Transformation:</strong></p>
                 <p>$$ y = \textcolor{red}{ x_1 x_2} x_3 \rightarrow y = \textcolor{red}{x_4} x_3 $$</p>
                 <p><strong>2. Enforce via Penalty Term:</strong></p>
-                <p>$$ y = \textcolor{red}{x_4} x_3 + \lambda(x_1 x_2 - 2x_1 x_4 - 2x_2 x_4 + 3x_4)^2 $$</p>
+                <p>$$ y = \textcolor{red}{x_4} x_3 + \lambda(x_1 x_2 - 2x_1 x_4 - 2x_2 x_4 + 3x_4) $$</p>
                 <p><strong>3. Recursion:</strong></p>
                 <p>Higher order terms follow the same logic:</p>
                 $$ \textcolor{red}{x_1 x_2} x_3 x_4 \rightarrow \textcolor{red}{x_5}\textcolor{blue}{x_3} x_4 \rightarrow \textcolor{blue}{x_6} x_3 $$
@@ -389,7 +390,7 @@
 
                 </p>
                 <p>
-                    <strong>Case II - Invalid Assignment</strong> when $k > b$. Then $k = b + \Delta$ for some $\Delta > 0$, and the penalty term is $$ \lambda (b + \Delta + s - b)^2 = \lambda (\Delta + s)^2 > 0 $$ since $s > 0$ and $\Delta > 0$.
+                    <strong>Case II - Invalid Assignment</strong> when $k > b$. Then $k = b + \Delta$ for some $\Delta > 0$, and the penalty term is $$ \lambda (b + \Delta + s - b)^2 = \lambda (\Delta + s)^2 > 0 $$ since $s \geq 0$ and $\Delta > 0$.
 
                 </p>
 
@@ -464,8 +465,7 @@
                                 unconstrained form:</p>
                             <div style="font-size: 0.9em;">$$ \min_{x,s} \left( -\sum v_i x_i + \lambda \left(\sum w_i
                                 x_i + S - W\right)^2 \right) $$</div>
-                            <p style="margin-top: -15px; margin-bottom: -15px;">Expanding this yields the exact elements
-                                for our matrix $\mathbf{Q}$:</p>
+                            <p style="margin-top: -15px; margin-bottom: -15px;">Expanding this yields the matrix $\mathbf{Q}$:</p>
                             <div style="font-size: 0.9em;">$$ Q_{ij} = 2\lambda w_i w_j, \quad Q_{ii} = -v_i + \lambda
                                 w_i(w_i - 2W) $$</div>
                         </div>
