@@ -306,11 +306,11 @@
             <!-- The Penalty Method -->
             <section>
                 <h6>The Penalty Method</h6>
-                <p>Constraints are incorporated into the QUBO objective function by adding quadratic penalties $P$. An
+                <p>Constraints are incorporated into the QUBO objective function by adding quadratic penalties weighted by $\lambda$. An
                     inequality like $x_1 + x_2 \leq 1$ is transformed into an unconstrained minimization:</p>
-                $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + P(x_1 x_2)^2 $$
+                $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \lambda(x_1 x_2)^2 $$
                 <ul>
-                    <li>Choosing $P \gt 0$ ensures violating the constraint is energetically unfavorable.</li>
+                    <li>Choosing $\lambda \gt 0$ ensures violating the constraint is energetically unfavorable.</li>
                     <li>All penalty terms are squared to ensure the term is never negative.</li>
                 </ul>
             </section>
@@ -329,27 +329,27 @@
                     <tbody>
                         <tr>
                             <td>$x_i + x_j \leq 1$</td>
-                            <td>$P(x_i x_j)$</td>
+                            <td>$\lambda(x_i x_j)^2$</td>
                         </tr>
                         <tr>
                             <td>$x_i + x_j \geq 1$</td>
-                            <td>$P(1 - x_i - x_j + x_i x_j)$</td>
+                            <td>$\lambda(1 - x_i - x_j + x_i x_j)^2$</td>
                         </tr>
                         <tr>
                             <td>$x_i + x_j = 1$</td>
-                            <td>$P(1 - x_i - x_j + 2x_i x_j)$</td>
+                            <td>$\lambda(1 - x_i - x_j + 2x_i x_j)^2$</td>
                         </tr>
                         <tr>
                             <td>$x_i \leq x_j$</td>
-                            <td>$P(x_i - x_i x_j)$</td>
+                            <td>$\lambda(x_i - x_i x_j)^2$</td>
                         </tr>
                         <tr>
                             <td>$x_i + x_j + x_k \leq 1$</td>
-                            <td>$P(x_i x_j + x_i x_k + x_j x_k)$</td>
+                            <td>$\lambda(x_i x_j + x_i x_k + x_j x_k)^2$</td>
                         </tr>
                         <tr>
                             <td>$x_i = x_j$</td>
-                            <td>$P(x_i + x_j - 2x_i x_j)$</td>
+                            <td>$\lambda(x_i + x_j - 2x_i x_j)^2$</td>
                         </tr>
                     </tbody>
                 </table>
@@ -365,7 +365,7 @@
                         <p><strong>1. Transformation:</strong></p>
                         $$ y = y_1 x_3 + x_2 x_3 + \dots $$
                         <p><strong>2. Penalty Term:</strong></p>
-                        $$ P(x_1 x_2 - 2x_1 y_1 - 2x_2 y_1 + 3y_1)^2 $$
+                        $$ \lambda(x_1 x_2 - 2x_1 y_1 - 2x_2 y_1 + 3y_1)^2 $$
                     </div>
                     <div style="flex: 1;">
                         <p><strong>3. Recursion:</strong></p>
@@ -379,18 +379,18 @@
             <!-- General Linear Inequalities -->
             <section class="compact-slide">
                 <h6>General Linear Inequalities and Slack Variables</h6>
-                <p>To encode an inequality $\sum_{i=1}^n a_i x_i \leq b$, introduce a slack variable $s \in [0, b]$ such
-                    that $\sum a_i x_i + s = b$. This is implemented by adding a penalty term to the objective:</p>
+                <p>To encode an inequality $\sum_{i=1}^n a_i x_i \leq b$ &nbsp;, introduce a slack variable $s \in [0, b]$ such
+                    that $\sum a_i x_i + s = b$ &nbsp; &nbsp;. This is implemented by adding a penalty term to the objective:</p>
                 <div style="display: flex; gap: 30px; align-items: flex-start;">
                     <div style="flex: 1;">
                         <p><strong>1. Binary Expansion:</strong></p>
                         $$ s = \sum_{i=0}^{N-1} 2^i s_i $$
-                        <p style="font-size: 0.8em;">where $N = \lfloor \log_2(b) \rfloor$ and $s_i \in \{0, 1\}$.</p>
+                        <p style="font-size: 0.8em;">where $N = \lfloor \log_2(b) \rfloor$ &nbsp; and $s_i \in \{0, 1\}$.</p>
                     </div>
                     <div style="flex: 1;">
                         <p><strong>2. Penalty Term:</strong></p>
-                        $$ P\left(\sum_{i=1}^n a_i x_i + s - b\right)^2 $$
-                        <p style="font-size: 0.8em;">where $P \gt 0$ is the penalty weight.</p>
+                        $$ \lambda\left(\sum_{i=1}^n a_i x_i + s - b\right)^2 $$
+                        <p style="font-size: 0.7em;">where $\lambda \gt 0$ &nbsp; is the penalty weight.</p>
                     </div>
                 </div>
             </section>
@@ -401,8 +401,8 @@
                 <div class="beamer-block alert">
                     <div class="beamer-block-header">Unconstrained Minimization</div>
                     <div class="beamer-block-body">
-                        <p>The general form including penalty terms $P_i g_i(\mathbf{x})$ is:</p>
-                        $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \sum_i P_i g_i(\mathbf{x}) $$
+                        <p>The general form including penalty terms $\lambda_i g_i(\mathbf{x})^2$ is:</p>
+                        $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \sum_i \lambda_i g_i(\mathbf{x})^2 $$
                     </div>
                 </div>
             </section>
@@ -411,7 +411,7 @@
             <section class="compact-slide">
                 <p style="margin-bottom: 0.2em;"><strong>Problem Description:</strong> 5 items (⚽️, 💻, 📸, 📚, 🎸) with
                     varying importance and limited knapsack space. Goal: maximize total value.</p>
-                <p style="margin-bottom: 0.2em;"><strong>Variables:</strong> Let $x_i \in \{0, 1\}$ represent whether we
+                <p style="margin-bottom: 0.2em;"><strong>Variables:</strong> Let $x_i \in \{0, 1\}$  &nbsp; represent whether we
                     bring the $i$-th item ($1$) or not ($0$). $\mathrm{x} = \{x_0:⚽️, x_1:💻, x_2:📸, x_3:📚, x_4:🎸\}$
                 </p>
                 <p style="margin-bottom: -15px;"><strong>Objective Function:</strong> Maximize the weighted sum value of
@@ -443,7 +443,7 @@
                     <p style="margin-bottom: -15px;"><strong>1. The Weight Constraint:</strong> The knapsack maximum weight is $W = 26$.</p>
                     <div style="font-size: 0.85em;">$$ 3x_0 + 11x_1 + 14x_2 + 19x_3 + 5x_4 \le 26 $$</div>
                     
-                    <p style="margin-top: -10px; margin-bottom: -15px;"><strong>2. Slack Variables:</strong> Convert to equality using a binary slack variable $S \in [0, 26]$:</p>
+                    <p style="margin-top: -10px; margin-bottom: -15px;"><strong>2. Slack Variables:</strong> Convert to equality using a binary slack variable $S \in [0, 26]$ &nbsp;:</p>
                     <div style="font-size: 0.85em;">$$ \sum w_i x_i + S = 26 \quad \text{where} \quad S = x_5 + 2x_6 + 4x_7 + 8x_8 + 16x_9 $$</div>
 
                     <p style="margin-top: -10px; margin-bottom: -15px;"><strong>3. Penalty Term:</strong> Add a quadratic penalty scaled by $\lambda$ to enforce the constraint:</p>
@@ -466,7 +466,7 @@
             <section class="compact-slide">
                 <h6>Conversion to Ising Model</h6>
                 <div style="font-size: 0.8em;">
-                    <p style="margin-bottom: -10px;">The final step to represent the QUBO problem on QPUs is mapping binary variables $x_i \in \{0, 1\}$ to spin variables $z_i \in \{1, -1\}$ via the transformation:</p>
+                    <p style="margin-bottom: -10px;">The final step to represent the QUBO problem on QPUs is mapping binary variables $x_i \in \{0, 1\}$  &nbsp;to spin variables $z_i \in \{1, -1\}$  &nbsp; via the transformation:</p>
                     <div style="font-size: 0.9em;">$$ x_i = \frac{1 - z_i}{2} $$</div>
                     
                     <p style="margin-top: -10px; margin-bottom: -10px;">Substituting this into our QUBO objective yields an Ising Hamiltonian with quadratic/linear terms and a constant $O$:</p>
