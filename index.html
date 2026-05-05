@@ -369,39 +369,48 @@
             </section>
 
             <!-- General Linear Inequalities -->
-            <section style="font-size: 0.8em;">
+            <section style="font-size: 0.6em;">
                 <h6>General Linear Inequalities and Slack Variables</h6>
                 <p>To encode a more general inequality $\sum a_i x_i \leq b$ into the objective function, introduce a slack variable $s \in [0,
                     b]$ so that the inequality becomes an equality: $\sum a_i x_i + s = b$. Then write $s$ in binary:
                     $$ s = \sum_{i=0}^{N-1} 2^i s_i $$
                     where $N = \lfloor \log_2(b) \rfloor$ and $s_i \in \{0,
                         1\}$.</p>
-                <div style="display: flex; gap: 30px; align-items: flex-start;">
-                    <div style="flex: 1;">
-                        <p><strong>1. Binary Expansion:</strong></p>
-                    </div>
-                    <div style="flex: 1;">
-                        <p><strong>2. Penalty Term:</strong></p>
-                        $$ \lambda\left(\sum_{i=1}^n a_i x_i + s - b\right)^2 $$
-                        <p style="font-size: 0.7em;">where $\lambda \gt 0$ &nbsp; is the penalty weight.</p>
-                    </div>
-                </div>
+
+                <p>
+                    Letting $k = \sum_{i=1}^n a_i x_i$,  the penalty term is
+                    $$ \lambda\left(\sum_{i=1}^n a_i x_i + s - b\right)^2 = \lambda(k + s - b)^2 $$
+
+                    
+
+                </p>
+                <p>
+                    <strong>Case I - Valid Assignment </strong> when $k ≤ b$: A valid choice of $s$ (specifically $s = b - k$) can be "learned" by the solver, and the penalty term becomes $$ \lambda (k + (b-k) - b)^2 = 0 $$
+
+                </p>
+                <p>
+                    <strong>Case II - Invalid Assignment</strong> when $k > b$. Then $k = b + \Delta$ for some $\Delta > 0$, and the penalty term is $$ \lambda (b + \Delta + s - b)^2 = \lambda (\Delta + s)^2 > 0 $$ since $s > 0$ and $\Delta > 0$.
+
+                </p>
+
+                
             </section>
 
             <!-- The General Form of QUBO -->
-            <section>
+            <section style="font-size: 0.8em;">
                 <h6>The General Form of QUBO</h6>
-                <div class="beamer-block alert">
-                    <div class="beamer-block-header">Unconstrained Minimization</div>
-                    <div class="beamer-block-body">
-                        <p>The general form including penalty terms $\lambda_i g_i(\mathbf{x})^2$ is:</p>
-                        $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \sum_i \lambda_i g_i(\mathbf{x})^2 $$
-                    </div>
-                </div>
+
+                <p>
+                    In summary, with the tools of order reduction and penalty terms, we can turn constrained optimization problems into an unconstrained optimization problem of the form:
+                    $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \sum_{i=1}^N \lambda_i g_i(\mathbf{x})^2 $$
+
+                    where $\lambda_i g_i(\mathbf{x})^2$ are the weighted penalty terms for each of $N$ constraints.
+                </p>
+
             </section>
 
             <!-- Knapsack Problem 1 -->
-            <section class="compact-slide">
+            <section style="font-size: 0.8em;">
                 <p style="margin-bottom: 0.2em;"><strong>Problem Description:</strong> 5 items (⚽️, 💻, 📸, 📚, 🎸) with
                     varying importance and limited knapsack space. Goal: maximize total value.</p>
                 <p style="margin-bottom: 0.2em;"><strong>Variables:</strong> Let $x_i \in \{0, 1\}$ &nbsp; represent
@@ -421,18 +430,18 @@
                         <div style="font-size: 0.9em;">
                             $$ \min_x -(8x_0 + 47x_1 + 10x_2 + 5x_3 + 16x_4) $$
                         </div>
-                        <p style="margin-top: -15px; margin-bottom: -15px;">This matches the general QUBO form using an
+                        <!-- <p style="margin-top: -15px; margin-bottom: -15px;">This matches the general QUBO form using an
                             upper triangular matrix $\mathbf{Q}$:</p>
                         <div style="font-size: 0.9em;">
                             $$ \min_x \mathbf{x}^T \mathbf{Q} \mathbf{x} = \min_x \left(\sum_i Q_{ii} x_i +
                             \sum_i\sum_{j>i} Q_{ij}x_i x_j\right) $$
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </section>
 
             <!-- Knapsack Problem 2 -->
-            <section class="compact-slide">
+            <section >
                 <div style="font-size: 0.75em;">
                     <p style="margin-bottom: -15px;"><strong>1. The Weight Constraint:</strong> The knapsack maximum
                         weight is $W = 26$.</p>
@@ -454,7 +463,7 @@
                             <p style="margin-bottom: -15px;">Combining the objective and penalty term gives the
                                 unconstrained form:</p>
                             <div style="font-size: 0.9em;">$$ \min_{x,s} \left( -\sum v_i x_i + \lambda \left(\sum w_i
-                                x_i - W\right)^2 \right) $$</div>
+                                x_i + S - W\right)^2 \right) $$</div>
                             <p style="margin-top: -15px; margin-bottom: -15px;">Expanding this yields the exact elements
                                 for our matrix $\mathbf{Q}$:</p>
                             <div style="font-size: 0.9em;">$$ Q_{ij} = 2\lambda w_i w_j, \quad Q_{ii} = -v_i + \lambda
