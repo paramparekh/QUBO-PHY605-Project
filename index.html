@@ -306,7 +306,8 @@
             <!-- The Penalty Method -->
             <section>
                 <h6>The Penalty Method</h6>
-                <p>Constraints are incorporated into the QUBO objective function by adding quadratic penalties weighted by $\lambda$. An
+                <p>Constraints are incorporated into the QUBO objective function by adding quadratic penalties weighted
+                    by $\lambda$. An
                     inequality like $x_1 + x_2 \leq 1$ is transformed into an unconstrained minimization:</p>
                 $$ \min y = \mathbf{x}^t \mathbf{Q} \mathbf{x} + \lambda(x_1 x_2)^2 $$
                 <ul>
@@ -379,13 +380,16 @@
             <!-- General Linear Inequalities -->
             <section class="compact-slide">
                 <h6>General Linear Inequalities and Slack Variables</h6>
-                <p>To encode an inequality $\sum_{i=1}^n a_i x_i \leq b$ &nbsp;, introduce a slack variable $s \in [0, b]$ such
-                    that $\sum a_i x_i + s = b$ &nbsp; &nbsp;. This is implemented by adding a penalty term to the objective:</p>
+                <p>To encode an inequality $\sum_{i=1}^n a_i x_i \leq b$ &nbsp;, introduce a slack variable $s \in [0,
+                    b]$ such
+                    that $\sum a_i x_i + s = b$ &nbsp; &nbsp;. This is implemented by adding a penalty term to the
+                    objective:</p>
                 <div style="display: flex; gap: 30px; align-items: flex-start;">
                     <div style="flex: 1;">
                         <p><strong>1. Binary Expansion:</strong></p>
                         $$ s = \sum_{i=0}^{N-1} 2^i s_i $$
-                        <p style="font-size: 0.8em;">where $N = \lfloor \log_2(b) \rfloor$ &nbsp; and $s_i \in \{0, 1\}$.</p>
+                        <p style="font-size: 0.8em;">where $N = \lfloor \log_2(b) \rfloor$ &nbsp; and $s_i \in \{0,
+                            1\}$.</p>
                     </div>
                     <div style="flex: 1;">
                         <p><strong>2. Penalty Term:</strong></p>
@@ -411,7 +415,8 @@
             <section class="compact-slide">
                 <p style="margin-bottom: 0.2em;"><strong>Problem Description:</strong> 5 items (⚽️, 💻, 📸, 📚, 🎸) with
                     varying importance and limited knapsack space. Goal: maximize total value.</p>
-                <p style="margin-bottom: 0.2em;"><strong>Variables:</strong> Let $x_i \in \{0, 1\}$  &nbsp; represent whether we
+                <p style="margin-bottom: 0.2em;"><strong>Variables:</strong> Let $x_i \in \{0, 1\}$ &nbsp; represent
+                    whether we
                     bring the $i$-th item ($1$) or not ($0$). $\mathrm{x} = \{x_0:⚽️, x_1:💻, x_2:📸, x_3:📚, x_4:🎸\}$
                 </p>
                 <p style="margin-bottom: -15px;"><strong>Objective Function:</strong> Maximize the weighted sum value of
@@ -440,45 +445,62 @@
             <!-- Knapsack Problem 2 -->
             <section class="compact-slide">
                 <div style="font-size: 0.75em;">
-                    <p style="margin-bottom: -15px;"><strong>1. The Weight Constraint:</strong> The knapsack maximum weight is $W = 26$.</p>
+                    <p style="margin-bottom: -15px;"><strong>1. The Weight Constraint:</strong> The knapsack maximum
+                        weight is $W = 26$.</p>
                     <div style="font-size: 0.85em;">$$ 3x_0 + 11x_1 + 14x_2 + 19x_3 + 5x_4 \le 26 $$</div>
-                    
-                    <p style="margin-top: -10px; margin-bottom: -15px;"><strong>2. Slack Variables:</strong> Convert to equality using a binary slack variable $S \in [0, 26]$ &nbsp;:</p>
-                    <div style="font-size: 0.85em;">$$ \sum w_i x_i + S = 26 \quad \text{where} \quad S = x_5 + 2x_6 + 4x_7 + 8x_8 + 16x_9 $$</div>
 
-                    <p style="margin-top: -10px; margin-bottom: -15px;"><strong>3. Penalty Term:</strong> Add a quadratic penalty scaled by $\lambda$ to enforce the constraint:</p>
-                    <div style="font-size: 0.7em;">$$ p(x,s) = \lambda \left(3x_0 + 11x_1 + 14x_2 + 19 x_3 + 5x_4 + x_5 + 2 x_6 + 4x_7 + 8 x_8 + 16 x_9 - 26\right)^2 \tag{5}$$</div>
+                    <p style="margin-top: -10px; margin-bottom: -15px;"><strong>2. Slack Variables:</strong> Convert to
+                        equality using a binary slack variable $S \in [0, 26]$ &nbsp;:</p>
+                    <div style="font-size: 0.85em;">$$ \sum w_i x_i + S = 26 \quad \text{where} \quad S = x_5 + 2x_6 +
+                        4x_7 + 8x_8 + 16x_9 $$</div>
+
+                    <p style="margin-top: -10px; margin-bottom: -15px;"><strong>3. Penalty Term:</strong> Add a
+                        quadratic penalty scaled by $\lambda$ to enforce the constraint:</p>
+                    <div style="font-size: 0.7em;">$$ p(x,s) = \lambda \left(3x_0 + 11x_1 + 14x_2 + 19 x_3 + 5x_4 + x_5
+                        + 2 x_6 + 4x_7 + 8 x_8 + 16 x_9 - 26\right)^2 \tag{5}$$</div>
 
                     <div class="beamer-block alert" style="margin-top: -10px;">
                         <div class="beamer-block-header">Full QUBO Objective & Matrix $\mathbf{Q}$</div>
                         <div class="beamer-block-body" style="font-size: 0.9em;">
-                            <p style="margin-bottom: -15px;">Combining the objective and penalty term gives the unconstrained form:</p>
-                            <div style="font-size: 0.9em;">$$ \min_{x,s} \left( -\sum v_i x_i + \lambda \left(\sum w_i x_i - W\right)^2 \right) $$</div>
-                            <p style="margin-top: -15px; margin-bottom: -15px;">Expanding this yields the exact elements for our matrix $\mathbf{Q}$:</p>
-                            <div style="font-size: 0.9em;">$$ Q_{ij} = 2\lambda w_i w_j, \quad Q_{ii} = -v_i + \lambda w_i(w_i - 2W) $$</div>
+                            <p style="margin-bottom: -15px;">Combining the objective and penalty term gives the
+                                unconstrained form:</p>
+                            <div style="font-size: 0.9em;">$$ \min_{x,s} \left( -\sum v_i x_i + \lambda \left(\sum w_i
+                                x_i - W\right)^2 \right) $$</div>
+                            <p style="margin-top: -15px; margin-bottom: -15px;">Expanding this yields the exact elements
+                                for our matrix $\mathbf{Q}$:</p>
+                            <div style="font-size: 0.9em;">$$ Q_{ij} = 2\lambda w_i w_j, \quad Q_{ii} = -v_i + \lambda
+                                w_i(w_i - 2W) $$</div>
                         </div>
                     </div>
                 </div>
             </section>
 
 
-                        <!-- Conversion to Ising Model -->
+            <!-- Conversion to Ising Model -->
             <section class="compact-slide">
                 <h6>Conversion to Ising Model</h6>
                 <div style="font-size: 0.8em;">
-                    <p style="margin-bottom: -10px;">The final step to represent the QUBO problem on QPUs is mapping binary variables $x_i \in \{0, 1\}$  &nbsp;to spin variables $z_i \in \{1, -1\}$  &nbsp; via the transformation:</p>
+                    <p style="margin-bottom: -10px;">The final step to represent the QUBO problem on QPUs is mapping
+                        binary variables $x_i \in \{0, 1\}$ &nbsp;to spin variables $z_i \in \{1, -1\}$ &nbsp; via the
+                        transformation:</p>
                     <div style="font-size: 0.9em;">$$ x_i = \frac{1 - z_i}{2} $$</div>
-                    
-                    <p style="margin-top: -10px; margin-bottom: -10px;">Substituting this into our QUBO objective yields an Ising Hamiltonian with quadratic/linear terms and a constant $O$:</p>
-                    <div style="font-size: 0.9em;">$$ H_c(\mathrm{z}) = \sum_{i, j > i}^{n} J_{ij} z_i z_j + \sum_{i=1}^n h_i z_i + O $$</div>
+
+                    <p style="margin-top: -10px; margin-bottom: -10px;">Substituting this into our QUBO objective yields
+                        an Ising Hamiltonian with quadratic/linear terms and a constant $O$:</p>
+                    <div style="font-size: 0.9em;">$$ H_c(\mathrm{z}) = \sum_{i, j > i}^{n} J_{ij} z_i z_j +
+                        \sum_{i=1}^n h_i z_i + O $$</div>
 
                     <div class="beamer-block standard" style="margin-top: -10px;">
                         <div class="beamer-block-header">Key Parameters</div>
                         <div class="beamer-block-body" style="padding-top: 5px; padding-bottom: 5px;">
                             <ul style="margin-bottom: 0;">
-                                <li style="margin-bottom: 5px;"><strong>$J_{ij}$:</strong> Interaction terms between spins, depending on the problem structure.</li>
-                                <li style="margin-bottom: 5px;"><strong>$h_i$:</strong> Linear terms (local magnetic fields).</li>
-                                <li style="margin-bottom: 0;"><strong>Penalty ($\lambda$):</strong> $\lambda = 2$ is sufficient here. Increase if constraints fail; reduce if valid solutions are suboptimal.</li>
+                                <li style="margin-bottom: 5px;"><strong>$J_{ij}$:</strong> Interaction terms between
+                                    spins, depending on the problem structure.</li>
+                                <li style="margin-bottom: 5px;"><strong>$h_i$:</strong> Linear terms (local magnetic
+                                    fields).</li>
+                                <li style="margin-bottom: 0;"><strong>Penalty ($\lambda$):</strong> $\lambda = 2$ is
+                                    sufficient here. Increase if constraints fail; reduce if valid solutions are
+                                    suboptimal.</li>
                             </ul>
                         </div>
                     </div>
@@ -506,97 +528,237 @@
                 $$ U(H, t, n) = \prod_{j=1}^n \prod_k e^{-iH_k t / n} $$
             </section>
 
-            <!-- QAOA Algorithm Steps -->
             <section>
-                <h6>QAOA Algorithm</h6>
-                <div class="beamer-block example">
-                    <div class="beamer-block-header">Process Flow</div>
-                    <div class="beamer-block-body">
-                        <ol>
-                            <li>Define <strong>cost Hamiltonian $H_C$</strong> and <strong>mixer Hamiltonian
-                                    $H_M$</strong>.</li>
-                            <li>Construct circuits $e^{-i\gamma H_C}$ and $e^{-i\alpha H_M}$.</li>
-                            <li>Build circuit: $U(\gamma, \alpha) = \prod_{k=1}^p e^{-i\alpha_k H_M} e^{-i\gamma_k
-                                H_C}$.</li>
-                            <li>Optimize parameters $\gamma, \alpha$ classically and measure.</li>
-                        </ol>
-                    </div>
-                </div>
-            </section>
-
-            <!-- QAOA Intuition (Rakshit's content) -->
-            <section>
-                <h6>QAOA Intuition</h6>
+                <h6>QAOA</h6>
                 <ul>
-                    <li>An approach to find the ground state of $H_c$.</li>
-                    <li>Prepares a quantum state where low-energy states have high probabilities.</li>
-                    <li><strong>Probabilistic:</strong> It does not guarantee the optimal solution but provides
-                        high-probability candidates.</li>
+                    <li>An approach to find the ground state of the $H_c$.</li>
+                    <li class="fragment">It prepares a quantum state where low-energy states have high
+                        probabilities.
+                        <ul>
+                            <li><strong>Probabilistic:</strong> does not guarantee the optimal solution.</li>
+                        </ul>
+                    </li>
+                    <!-- <li>NISQ</li> -->
                 </ul>
             </section>
 
             <!-- QAOA Layers (Rakshit's content) -->
-            <section class="compact-slide">
-                <h6>QAOA Circuit Structure</h6>
-                <p>The algorithm alternates between cost unitaries $e^{-i\gamma H_C}$ and mixer unitaries $e^{-i\beta
-                    H_M}$:</p>
-                <img src="circuit-diagram.svg" alt="QAOA Circuit"
-                    style="display: block; margin: 20px auto; width: 85%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
-                <p style="font-size: 0.8em; text-align: center;">Repeated $p$ times to increase accuracy.</p>
+            <section>
+                <h6>QAOA</h6>
+                <ul>
+                    <li style="margin-bottom: 108px;"> In the simplest version of QAOA, it alternates cost unitaries
+                        $e^{-i\gamma H_C}$ and mixer unitaries $e^{-i\beta H_M}$.
+                        <img src="circuit-diagram.svg" alt="QAOA Circuit"
+                            style="display: block; margin: 80px auto 20px; width: 90%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+                    </li>
+                </ul>
             </section>
 
-            <!-- Hamiltonian Roles (Rakshit's content) -->
             <section>
-                <h6>Hamiltonian Roles</h6>
+                <h6>QAOA</h6>
+                <ul>
+                    <li>
+                        <img src="circuit-diagram.svg" alt="QAOA Circuit"
+                            style="display: block; margin: 0px auto 20px; width: 90%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+
+                        We start with a uniform superposition $|+\rangle^{\otimes n}$.
+                    </li>
+                    <li class="fragment"> As $H_C |x\rangle = f(x) |x\rangle$,
+                        $$e^{-i\gamma H_C} |x\rangle = e^{-i\gamma f(x)} |x\rangle$$
+                    </li>
+
+                    <li class="fragment"> This doesn't change probabilities but it changes
+                        phase according
+                        to the cost.
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h6>QAOA</h6>
+                <ul>
+                    <li>
+                        <img src="circuit-diagram.svg" alt="QAOA Circuit"
+                            style="display: block; margin: 0px auto 20px; width: 90%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+
+                        We apply the mixer unitary $e^{-i\beta H_M}$, where
+                        $$ H_M = \sum_i X_i$$
+                    </li>
+                    <li class="fragment"> The mixer can change probabilities. But it does
+                        not know which strings are good or bad. It just mixes them around blindly.
+                    </li>
+
+
+                </ul>
+            </section>
+
+            <section>
+                <h6>Single Qubit Example</h6>
+                <ul>
+                    <li>Let's say $f(0) < f(1)$</li>
+                    <li class="fragment"> Cost hamiltonian $H_C = -Z$ as
+                        <ul>
+                            <li>$H_C |0\rangle = -|0\rangle$</li>
+                            <li>$H_C |1\rangle = +|1\rangle$</li>
+                        </ul>
+                    </li>
+
+                    <li class="fragment"> Mixer will remain the same $H_M= X$</li>
+                </ul>
+            </section>
+
+            <section>
+                <h6>Single Qubit Example</h6>
+                <ul>
+                    <li> Start state: $|+\rangle$</li>
+
+                    <li class="fragment"> Apply cost unitary $e^{i\gamma Z}$:
+                        $$e^{i\gamma Z} |+\rangle = e^{i\gamma}
+                        |0\rangle + e^{-i\gamma} |1\rangle$$</li>
+
+                    <li class="fragment"> Apply mixer unitary $e^{-i\beta X}$:
+                        $$
+                        \begin{aligned}
+                        e^{-i\beta X}( e^{i\gamma} |0\rangle + e^{-i\gamma} |1\rangle) &=
+                        (\cos\beta e^{i\gamma} - i\sin\beta e^{-i\gamma}) |0\rangle \\
+                        &+ (\cos\beta e^{-i\gamma} - i\sin\beta e^{i\gamma}) |1\rangle
+                        \end{aligned}
+                        $$
+                    </li>
+                </ul>
+            </section>
+
+
+            <!-- Hamiltonian Roles (Rakshit's content) -->
+
+            <section>
+                <h6>QAOA </h6>
                 <div class="beamer-block standard">
-                    <div class="beamer-block-header">Mechanics</div>
+                    <div class="beamer-block-header">Unitary roles</div>
                     <div class="beamer-block-body">
                         <ul>
-                            <li><strong>$H_C$:</strong> Applies a phase depending on the cost $f(x)$. Since $H_C
-                                |x\rangle = f(x) |x\rangle$, it maps $e^{-i\gamma f(x)}$ to each state.</li>
+                            <li><strong>$H_C$:</strong> Applies a phase depending on the cost $f(x)$.</li>
                             <li><strong>$H_M$:</strong> Mixes the amplitudes to shift probability towards better
                                 solutions (lower energy).</li>
                         </ul>
                     </div>
                 </div>
-            </section>
 
-            <!-- QAOA for Knapsack Problem -->
-            <section class="compact-slide">
-                <h6>QAOA for Knapsack Problem</h6>
-                <div style="display: flex; gap: 20px; align-items: flex-start; font-size: 0.8em;">
-                    <div style="flex: 1;">
-                        <p><strong>1. Cost Hamiltonian ($H_c$):</strong></p>
-                        $$ e^{-i\gamma_i (\sum J_{ij} Z_i Z_j + \sum h_i Z_i)} $$
+                <div class="beamer-block standard fragment">
+                    <div class="beamer-block-header">All together</div>
+                    <div class="beamer-block-body">
                         <ul>
-                            <li>$e^{-i\gamma_i J_{ij} Z_i Z_j} \rightarrow RZZ(2\gamma_i J_{ij})$</li>
-                            <li>$e^{-i\gamma_i h_i Z_i} \rightarrow RZ(2\gamma_i h_i)$</li>
-                        </ul>
-                    </div>
-                    <div style="flex: 1;">
-                        <p><strong>2. Mixer Hamiltonian ($H_M$):</strong></p>
-                        $$ e^{i\beta_i X}, \quad X = \sum \sigma_i^x $$
-                        <ul>
-                            <li>Implemented via $R_X(-2\beta_i)$ gates.</li>
-                            <li>Sequence repeated $p$ times for optimization.</li>
+                            <li>Prepare the initial state $|+\rangle^{\otimes n}$.</li>
+                            <li>Pick parameters $\gamma_i$ and $\beta_i$.</li>
+                            <li>Apply unitaries: $e^{-i\gamma_i H_C}$ and $e^{-i\beta_i H_M}$ </li>
+                            <li>Repeat for $p$ layers</li>
+                            <li>Return the measurement of the final state</li>
                         </ul>
                     </div>
                 </div>
+
             </section>
 
+
             <!-- Initialization and Adiabatic QAOA -->
+
             <section>
-                <h6>Initialization and Adiabatic QAOA</h6>
-                <p>QAOA can be viewed as a Trotterization of the <strong>Quantum Adiabatic Algorithm</strong>.</p>
+                <h6>Picking Parameters</h6>
                 <ul>
-                    <li><strong>Process:</strong> Start in ground state $|+\rangle^{\otimes n}$ of mixer $X$ and move
-                        slowly to ground state of $H_c$.</li>
-                    <li><strong>Adiabatic Schedule:</strong>
+                    <li> This part is classical. The simple QAOA treats $\gamma_i, \beta_i$ as mostly free parameters.
+                    </li>
+
+                    <li class="fragment"> Alternatively, we can do a annealing style parametrization. These are no
+                        longer independent.
+                    </li>
+
+                    <li class="fragment">In quantum annealing, We move from ground state of one hamiltonian to another,
+                        $$H(t)=(1−s(t))H_1+s(t)H_2$$
+                    </li>
+
+
+                </ul>
+            </section>
+            <section>
+                <h6>Picking Parameters</h6>
+                <ul>
+                    <li><strong>Process:</strong> Start in ground state $|+\rangle^{\otimes n}$ of mixer $H_M$ and
+                        move slowly to ground state of $H_c$.</li>
+
+                    <li class="fragment">
+                        QAOA can be viewed as a discretized version of this continuous process.
+                    </li>
+
+                    <li class="fragment"><strong>Annealing parametrization:</strong>
                         <ul>
                             <li>Move $\beta_i$ linearly from $1 \rightarrow 0$.</li>
                             <li>Move $\gamma_i$ linearly from $0 \rightarrow 1$.</li>
                         </ul>
                     </li>
+                </ul>
+            </section>
+
+
+
+            <!-- Benchmarking Placeholder (Rakshit's content) -->
+            <section>
+                <h6>Benchmarking QAOA: Slack</h6>
+                <ul>
+
+                    <img src="slack.png" alt="Slack"
+                        style="display: block; margin: 20px auto 20px; width: 90%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+
+
+                    <li class="fragment"> Initially, you may think it is not improving the performance as the
+                        naive search
+                        gives $5000/2^5 \approx 156$ solutions.
+                    </li>
+
+                    <li class="fragment"> But we are looking at it wrong because slack bits expanded the ecoding space
+                        and the naive search here could get $5000/2^{10} \approx 5$ solutions only. So this actually
+                        gave a
+                        small improvement.
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h6>Unbalanced Penalization</h6>
+                <ul>
+                    <li> We set a new penalty without the slack bits
+                        <div style="font-size: 0.5em;">
+                            $$ \min_{x,s} (f(x) + p(x,s)) = \min_{x,s} \left[ -\sum_i v_i x_i - \lambda_1 \left(\sum_i
+                            w_i x_i - W\right) + \lambda_2 \left(\sum_i w_i x_i - W\right)^2 \right]$$
+                        </div>
+                    </li>
+
+                    <li class="fragment"> Unlike slack approach where the penalty is >0 for infeasible $x$ and 0 for
+                        feasible $x$,
+                    </li>
+
+                    <li class="fragment"> The penalty for the infeasible is more than the feasible.
+                    </li>
+                </ul>
+            </section>
+
+            <section>
+                <h6>Benchmarking QAOA: Slack vs Unbalanced</h6>
+                <ul>
+                    <li> Unbalanced approach sampled 71 (optimal value) 1974 times out of 5000. </li>
+                    <img src="outputQAOA.png" alt="Slack"
+                        style="display: block; margin: 10px auto; max-height: 400px; max-width: 90%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+
+                </ul>
+            </section>
+
+            <section>
+                <h6>Benchmarking Quantum Annealing: Slack vs Unbalanced</h6>
+                <ul>
+                    <li> We used the quantum annealer D-Wave Advantage. We obtain 71 (optimal) 2046 times out of 5000.
+                    </li>
+                    <img src="outputQA.png" alt="Slack"
+                        style="display: block; margin: 10px auto; max-height: 400px; max-width: 90%; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+
                 </ul>
             </section>
 
